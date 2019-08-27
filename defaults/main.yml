@@ -1,0 +1,5 @@
+---
+consul_format: 'zip'
+consul_state: present
+consul_version: '1.5.3'
+...

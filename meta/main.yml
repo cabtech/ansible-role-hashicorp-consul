@@ -1,0 +1,4 @@
+---
+dependencies:
+- {role: hashicorp/common, tags: consul}
+...
