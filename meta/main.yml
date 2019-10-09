@@ -1,4 +1,5 @@
 ---
 dependencies:
-- {role: ansible-role-hashicorp-common, tags: consul}
+- src: git+https://github.com/cabtech/ansible-role-hashicorp-common.git
+  tags: consul
 ...

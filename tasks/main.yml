@@ -1,1 +1,35 @@
-#
+---
+# --------------------------------
+
+- name: 'push consul bash include'
+  template:
+    src: consul.sh.j2
+    dest: /usr/local/etc/bash.d/consul.sh
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+  tags:
+  - ct-consul
+
+- name: 'download zip file'
+  get_url:
+    url: '{{hashicorp_repo}}/consul/{{consul_target}}'
+    dest: '{{hashicorp_dir_staging}}'
+    timeout: '{{hashicorp_internet_timeout}}'
+    validate_certs: false
+  tags:
+  - ct-consul
+
+- name: 'expand zip file'
+  unarchive:
+    src: '{{hashicorp_dir_staging}}/{{consul_target}}'
+    dest: '{{hashicorp_dir_bin}}'
+    copy: false
+  become: true
+  ignore_errors: '{{ansible_check_mode}}'
+  tags:
+  - ct-consul
+
+# --------------------------------
+...
