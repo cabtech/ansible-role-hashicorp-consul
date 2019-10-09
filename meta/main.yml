@@ -1,5 +1,5 @@
 ---
 dependencies:
 - src: git+https://github.com/cabtech/ansible-role-hashicorp-common.git
-  tags: consul
+  tags: ct-consul
 ...

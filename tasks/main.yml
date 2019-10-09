@@ -1,7 +1,7 @@
 ---
 # --------------------------------
 
-- name: 'push consul bash include'
+- name: 'push bash include'
   template:
     src: consul.sh.j2
     dest: /usr/local/etc/bash.d/consul.sh
@@ -12,7 +12,7 @@
   tags:
   - ct-consul
 
-- name: 'download zip file'
+- name: 'download archive'
   get_url:
     url: '{{hashicorp_repo}}/consul/{{consul_version}}/{{consul_target}}'
     dest: '{{hashicorp_dir_staging}}'
@@ -21,7 +21,7 @@
   tags:
   - ct-consul
 
-- name: 'expand zip file'
+- name: 'expand archive'
   unarchive:
     src: '{{hashicorp_dir_staging}}/{{consul_target}}'
     dest: '{{hashicorp_dir_bin}}'

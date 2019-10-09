@@ -1,7 +1,7 @@
 ---
-consul_format: 'zip'
+consul_format: zip
 consul_state: present
 consul_version: '1.6.0'
 #
-consul_target: consul_{{consul_version}}_{{hashicorp_arch}}.{{consul_format}}'
+consul_target: 'consul_{{consul_version}}_{{hashicorp_arch}}.{{consul_format}}'
 ...
