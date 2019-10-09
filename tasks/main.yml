@@ -14,7 +14,7 @@
 
 - name: 'download zip file'
   get_url:
-    url: '{{hashicorp_repo}}/consul/{{consul_target}}'
+    url: '{{hashicorp_repo}}/consul/{{consul_version}}/{{consul_target}}'
     dest: '{{hashicorp_dir_staging}}'
     timeout: '{{hashicorp_internet_timeout}}'
     validate_certs: false
