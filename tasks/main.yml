@@ -12,6 +12,43 @@
   tags:
   - ct-consul
 
+- name: 'directories'
+  file:
+    state: directory
+    path: '{{item}}'
+    owner: root
+    group: root
+    mode: '0755'
+  loop:
+  - '{{consul_etc_dir}}'
+  - '{{consul_data_dir}}'
+  become: true
+  tags:
+  - ct-consul
+
+- name: 'render config template'
+  template:
+    src: config.json.j2
+    dest: '{{consul_etc_dir}}/config.json'
+    owner: root
+    group: root
+    mode: '0600'
+  become: true
+  tags:
+  - ct-consul
+
+- name: 'render systemd unit file'
+  template:
+    src: consul.service.j2
+    dest: /etc/systemd/system/consul.service
+    owner: root
+    group: root
+    mode: '0600'
+  register: reg_service
+  become: true
+  tags:
+  - ct-consul
+
 - name: 'download archive'
   get_url:
     url: '{{hashicorp_repo}}/consul/{{consul_version}}/{{consul_target}}'
@@ -28,6 +65,15 @@
     copy: false
   become: true
   ignore_errors: '{{ansible_check_mode}}'
+  tags:
+  - ct-consul
+
+- name: 'Set consul service to {{consul_state}}'
+  systemd:
+    name: consul
+    state: '{{consul_state}}'
+    daemon_reload: '{{reg_service is changed}}'
+  become: true
   tags:
   - ct-consul
 

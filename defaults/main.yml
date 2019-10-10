@@ -1,6 +1,11 @@
 ---
+consul_addresses: []
+consul_data_dir: /var/consul
+consul_datacentre: 'YourUnnamedDataCentre'
+consul_etc_dir: /etc/consul.d
 consul_format: zip
-consul_state: present
+consul_key: None
+consul_state: started
 consul_version: '1.6.0'
 #
 consul_target: 'consul_{{consul_version}}_{{hashicorp_arch}}.{{consul_format}}'
