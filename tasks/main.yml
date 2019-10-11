@@ -41,6 +41,7 @@
     owner: root
     group: root
     mode: '0600'
+  no_log: true
   become: true
   tags:
   - ct-consul
