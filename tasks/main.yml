@@ -19,9 +19,7 @@
     owner: root
     group: root
     mode: '0755'
-  loop:
-  - '{{consul_etc_dir}}'
-  - '{{consul_data_dir}}'
+  loop: '{{consul_dirs}}'
   become: true
   tags:
   - ct-consul
@@ -36,10 +34,10 @@
   tags:
   - ct-consul
 
-- name: 'render config template'
+- name: 'render {{consul_role}} config'
   template:
-    src: config.json.j2
-    dest: '{{consul_etc_dir}}/config.json'
+    src: '{{consul_role}}.json.j2'
+    dest: '{{consul_etc_dir}}/{{consul_role}}.json'
     owner: root
     group: root
     mode: '0600'
@@ -49,8 +47,8 @@
 
 - name: 'render systemd unit file'
   template:
-    src: consul.service.j2
-    dest: /etc/systemd/system/consul.service
+    src: consul-{{consul_role}}.service.j2
+    dest: /etc/systemd/system/consul-{{consul_role}}.service
     owner: root
     group: root
     mode: '0600'
@@ -78,9 +76,9 @@
   tags:
   - ct-consul
 
-- name: 'consul service to {{consul_state}}'
+- name: 'consul-{{consul_role}} service to {{consul_state}}'
   systemd:
-    name: consul
+    name: consul-{{consul_role}}
     state: '{{consul_state}}'
     enabled: true
     daemon_reload: '{{reg_service is changed}}'
