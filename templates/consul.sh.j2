@@ -1,1 +1,6 @@
-# empty for now
+# --------------------------------
+# bash include consul.sh :: managed by Ansible
+export PATH="{{hashicorp_dir_bin}}:${PATH}"
+alias cs={{hashicorp_dir_bin}}/consul
+alias csm='cs members'
+# --------------------------------
