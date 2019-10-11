@@ -26,6 +26,16 @@
   tags:
   - ct-consul
 
+- name: 'system account'
+  user:
+    name: consul
+    comment: 'Consul system account'
+    system: true
+    state: present
+  become: true
+  tags:
+  - ct-consul
+
 - name: 'render config template'
   template:
     src: config.json.j2
@@ -68,10 +78,11 @@
   tags:
   - ct-consul
 
-- name: 'Set consul service to {{consul_state}}'
+- name: 'consul service to {{consul_state}}'
   systemd:
     name: consul
     state: '{{consul_state}}'
+    enabled: true
     daemon_reload: '{{reg_service is changed}}'
   become: true
   tags:
