@@ -1,0 +1,7 @@
+---
+- name: 'handler_restart_consul'
+  systemd:
+    state: restarted
+    name: consul-{{consul_role}}.service
+  become: true
+...

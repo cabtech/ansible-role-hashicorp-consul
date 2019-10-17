@@ -1,6 +1,25 @@
 ---
 # --------------------------------
 
+- name: 'download archive'
+  get_url:
+    url: '{{hashicorp_repo}}/consul/{{consul_version}}/{{consul_target}}'
+    dest: '{{hashicorp_dir_staging}}'
+    timeout: '{{hashicorp_internet_timeout}}'
+    validate_certs: false
+  tags:
+  - ct-consul
+
+- name: 'expand archive'
+  unarchive:
+    src: '{{hashicorp_dir_staging}}/{{consul_target}}'
+    dest: '{{hashicorp_dir_bin}}'
+    copy: false
+  become: true
+  ignore_errors: '{{ansible_check_mode}}'
+  tags:
+  - ct-consul
+
 - name: 'push bash include'
   template:
     src: consul.sh.j2
@@ -41,6 +60,7 @@
     owner: root
     group: root
     mode: '0600'
+  notify: handler_restart_consul
   no_log: true
   become: true
   tags:
@@ -55,25 +75,6 @@
     mode: '0600'
   register: reg_service
   become: true
-  tags:
-  - ct-consul
-
-- name: 'download archive'
-  get_url:
-    url: '{{hashicorp_repo}}/consul/{{consul_version}}/{{consul_target}}'
-    dest: '{{hashicorp_dir_staging}}'
-    timeout: '{{hashicorp_internet_timeout}}'
-    validate_certs: false
-  tags:
-  - ct-consul
-
-- name: 'expand archive'
-  unarchive:
-    src: '{{hashicorp_dir_staging}}/{{consul_target}}'
-    dest: '{{hashicorp_dir_bin}}'
-    copy: false
-  become: true
-  ignore_errors: '{{ansible_check_mode}}'
   tags:
   - ct-consul
 
