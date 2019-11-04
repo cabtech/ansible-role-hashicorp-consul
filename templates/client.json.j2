@@ -1,10 +1,16 @@
 {
+    "connect": {
+        "enabled": true
+    },
     "data_dir": "{{consul_lib_dir}}",
     "datacenter": "{{consul_datacentre}}",
     "enable_syslog": true,
     "encrypt": "{{consul_key}}",
     "leave_on_terminate": true,
     "log_level": "INFO",
+    "ports": {
+        "grpc": 8052
+    },
     "server": false,
     "start_join": [
 {% for ip in consul_addresses %}

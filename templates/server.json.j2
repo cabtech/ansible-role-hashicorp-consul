@@ -1,5 +1,8 @@
 {
     "bootstrap_expect": {{consul_addresses|length}},
+    "connect": {
+        "enabled": true
+    },
     "client_addr": "0.0.0.0",
     "datacenter": "{{consul_datacentre}}",
     "data_dir": "{{consul_lib_dir}}",
@@ -13,6 +16,9 @@
     "encrypt": "{{consul_key}}",
     "leave_on_terminate": true,
     "log_level": "INFO",
+    "ports": {
+        "grpc": 8052
+    },
     "rejoin_after_leave": true,
     "server": true,
     "start_join": [
