@@ -2,5 +2,5 @@
 dependencies:
 - src: git+https://github.com/cabtech/ansible-role-hashicorp-common.git
   tags: ct-consul
-  version: '1.0.0'
+  version: '2.0.0'
 ...
