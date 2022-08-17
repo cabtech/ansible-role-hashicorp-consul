@@ -1,5 +1,5 @@
 {
-    "bootstrap_expect": {{consul_addresses|length}},
+    "bootstrap_expect": {{consul_servers|length}},
     "client_addr": "0.0.0.0",
     "datacenter": "{{consul_datacentre}}",
     "data_dir": "{{consul_lib_dir}}",
@@ -16,7 +16,7 @@
     "rejoin_after_leave": true,
     "server": true,
     "start_join": [
-{% for ip in consul_addresses %}
+{% for ip in consul_servers %}
         "{{ip}}"{{ "," if not loop.last else "" }}
 {% endfor %}
     ],

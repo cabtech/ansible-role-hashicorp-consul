@@ -3,19 +3,43 @@
 
 - name: 'download archive'
   get_url:
-    url: '{{hashicorp_repo}}/consul/{{consul_version}}/{{consul_target}}'
+    url: '{{hashicorp_repo}}/consul/{{item.version}}/consul_{{item.version}}_{{hashicorp_arch}}.{{consul_format}}'
     dest: '{{hashicorp_dir_staging}}'
     timeout: '{{hashicorp_internet_timeout}}'
     validate_certs: false
+  loop: '{{consul_builds}}'
+  when: item.state == 'present'
+  tags: [ct-consul]
+
+- name: 'create package directories'
+  file:
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+    path: '{{hashicorp_dir_pkg}}/consul/{{item.version}}'
+  loop: '{{consul_builds}}'
+  when: item.state == 'present'
+  become: true
   tags: [ct-consul]
 
 - name: 'expand archive'
   unarchive:
-    src: '{{hashicorp_dir_staging}}/{{consul_target}}'
-    dest: '{{hashicorp_dir_bin}}'
+    src: '{{hashicorp_dir_staging}}/consul_{{item.version}}_{{hashicorp_arch}}.{{consul_format}}'
+    dest: '{{hashicorp_dir_pkg}}/consul/{{item.version}}'
     copy: false
-  become: true
+  loop: '{{consul_builds}}'
+  when: item.state == 'present'
   ignore_errors: '{{ansible_check_mode}}'
+  become: true
+  tags: [ct-consul]
+
+- name: 'create symlink to active binary'
+  file:
+    dest: '{{hashicorp_dir_bin}}/consul'
+    src: '{{hashicorp_dir_pkg}}/consul/{{consul_version}}/consul'
+    state: link
+  become: true
   tags: [ct-consul]
 
 - name: 'push bash include'
@@ -48,14 +72,15 @@
   become: true
   tags: [ct-consul]
 
-- name: 'render {{consul_role}} config'
+- name: 'render {{consul_role}} config (NL)'
   template:
     src: '{{consul_role}}.json.j2'
     dest: '{{consul_etc_dir}}/{{consul_role}}.json'
     owner: root
     group: root
     mode: '0600'
-  notify: handler_restart_consul
+  when: (consul_servers | length) > 0
+  notify: handler_reload_consul
   no_log: true
   become: true
   tags: [ct-consul]
@@ -77,6 +102,7 @@
     state: '{{consul_state}}'
     enabled: true
     daemon_reload: '{{reg_service is changed}}'
+  when: (consul_servers | length) > 0
   become: true
   tags: [ct-consul]
 
