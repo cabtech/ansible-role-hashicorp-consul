@@ -7,8 +7,7 @@
     dest: '{{hashicorp_dir_staging}}'
     timeout: '{{hashicorp_internet_timeout}}'
     validate_certs: false
-  tags:
-  - ct-consul
+  tags: [ct-consul]
 
 - name: 'expand archive'
   unarchive:
@@ -17,8 +16,7 @@
     copy: false
   become: true
   ignore_errors: '{{ansible_check_mode}}'
-  tags:
-  - ct-consul
+  tags: [ct-consul]
 
 - name: 'push bash include'
   template:
@@ -28,8 +26,7 @@
     group: root
     mode: 0644
   become: true
-  tags:
-  - ct-consul
+  tags: [ct-consul]
 
 - name: 'directories'
   file:
@@ -40,8 +37,7 @@
     mode: '0755'
   loop: '{{consul_dirs}}'
   become: true
-  tags:
-  - ct-consul
+  tags: [ct-consul]
 
 - name: 'system account'
   user:
@@ -50,8 +46,7 @@
     system: true
     state: present
   become: true
-  tags:
-  - ct-consul
+  tags: [ct-consul]
 
 - name: 'render {{consul_role}} config'
   template:
@@ -63,8 +58,7 @@
   notify: handler_restart_consul
   no_log: true
   become: true
-  tags:
-  - ct-consul
+  tags: [ct-consul]
 
 - name: 'render systemd unit file'
   template:
@@ -75,8 +69,7 @@
     mode: '0600'
   register: reg_service
   become: true
-  tags:
-  - ct-consul
+  tags: [ct-consul]
 
 - name: 'consul-{{consul_role}} service to {{consul_state}}'
   systemd:
@@ -85,8 +78,7 @@
     enabled: true
     daemon_reload: '{{reg_service is changed}}'
   become: true
-  tags:
-  - ct-consul
+  tags: [ct-consul]
 
 # --------------------------------
 ...
