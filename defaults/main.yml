@@ -7,8 +7,9 @@
 consul_builds:
 - {version: '1.12.0', state: present}
 - {version: '1.12.4', state: present}
-consul_lib_dir: /var/lib/consul
+consul_enable_ui: false
 consul_etc_dir: /etc/consul
+consul_lib_dir: /var/lib/consul
 consul_format: zip
 consul_log_dir: /var/log/consul
 consul_role: client  # ... or server
