@@ -25,4 +25,8 @@ consul_builds:
 - {version: '1.12.0', state: present}
 - {version: '1.12.4', state: present}
 ```
+
+## Role Dependencies
+- `ansible-role-hashicorp-common`
+
 ****

@@ -2,9 +2,9 @@
 # --------------------------------
 
 - name: 'download archive'
-  get_url:
+  ansible.builtin.get_url:
     url: '{{hashicorp_repo}}/consul/{{item.version}}/consul_{{item.version}}_{{hashicorp_arch}}.{{consul_format}}'
-    dest: '{{hashicorp_dir_staging}}'
+    dest: '{{hashicorp_dir_staging}}/consul_{{item.version}}_{{hashicorp_arch}}.{{consul_format}}'
     timeout: '{{hashicorp_internet_timeout}}'
     validate_certs: false
   loop: '{{consul_builds}}'
@@ -12,7 +12,7 @@
   tags: [ct-consul]
 
 - name: 'create package directories'
-  file:
+  ansible.builtin.file:
     state: directory
     owner: root
     group: root
@@ -24,7 +24,7 @@
   tags: [ct-consul]
 
 - name: 'expand archive'
-  unarchive:
+  ansible.builtin.unarchive:
     src: '{{hashicorp_dir_staging}}/consul_{{item.version}}_{{hashicorp_arch}}.{{consul_format}}'
     dest: '{{hashicorp_dir_pkg}}/consul/{{item.version}}'
     copy: false
@@ -35,7 +35,7 @@
   tags: [ct-consul]
 
 - name: 'create symlink to active binary'
-  file:
+  ansible.builtin.file:
     dest: '{{hashicorp_dir_bin}}/consul'
     src: '{{hashicorp_dir_pkg}}/consul/{{consul_version}}/consul'
     state: link
@@ -44,7 +44,7 @@
   tags: [ct-consul]
 
 - name: 'push bash include'
-  template:
+  ansible.builtin.template:
     src: consul.sh.j2
     dest: /usr/local/etc/bash.d/consul.sh
     owner: root
@@ -54,7 +54,7 @@
   tags: [ct-consul]
 
 - name: 'directories'
-  file:
+  ansible.builtin.file:
     state: directory
     path: '{{item}}'
     owner: root
@@ -65,7 +65,7 @@
   tags: [ct-consul]
 
 - name: 'system account'
-  user:
+  ansible.builtin.user:
     name: consul
     comment: 'Consul system account'
     system: true
@@ -74,7 +74,7 @@
   tags: [ct-consul]
 
 - name: 'render {{consul_role}} config (NL)'
-  template:
+  ansible.builtin.template:
     src: '{{consul_role}}.json.j2'
     dest: '{{consul_etc_dir}}/{{consul_role}}.json'
     owner: root
@@ -87,7 +87,7 @@
   tags: [ct-consul]
 
 - name: 'render systemd unit file'
-  template:
+  ansible.builtin.template:
     src: consul-{{consul_role}}.service.j2
     dest: /etc/systemd/system/consul-{{consul_role}}.service
     owner: root
@@ -98,7 +98,7 @@
   tags: [ct-consul]
 
 - name: 'consul-{{consul_role}} service to {{consul_state}}'
-  systemd:
+  ansible.builtin.systemd:
     name: consul-{{consul_role}}
     state: '{{consul_state}}'
     enabled: true
