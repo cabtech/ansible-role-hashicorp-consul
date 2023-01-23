@@ -17,7 +17,7 @@ consul_state: started
 consul_version: '1.12.4'
 
 consul_dirs:
-- '{{consul_etc_dir}}'
-- '{{consul_lib_dir}}'
-- '{{consul_log_dir}}'
+- '{{ consul_etc_dir }}'
+- '{{ consul_lib_dir }}'
+- '{{ consul_log_dir }}'
 ...

@@ -2,5 +2,16 @@
 dependencies:
 - src: git+https://github.com/cabtech/ansible-role-hashicorp-common.git
   tags: ct-consul
-  version: '2.1.0'
+  version: "2.1.0"
+
+galaxy_info:
+  author: Tim Short
+  description: Install Hashicorp Consul
+  license: GPL v3
+  min_ansible_version: TBC
+  namespace: cabtech
+  platforms:
+  - name: Ubuntu
+    versions: ["bionic", "focal", "jammy"]
+  role_name: ansible_role_hashicorp_consul
 ...

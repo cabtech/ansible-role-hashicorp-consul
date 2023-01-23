@@ -1,6 +1,6 @@
 ---
 skip_list:
-- meta-no-info
-- role-name
+- ignore-errors
+- name[template]
 - yaml[indentation]
 ...
