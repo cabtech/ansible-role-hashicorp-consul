@@ -1,12 +1,18 @@
 ---
-# You need to set these
-# consul_datacentre: string
-# consul_key: string
-# consul_servers: list(IPv4)
+# --------------------------------
 
+consul_acl_default_policy: allow
+consul_acl_dir: /usr/local/etc/consul
+consul_acl_enabled: false
+consul_acl_subdirs: ["intention.d", "manifest.d", "policy.d", "token.d"]
 consul_builds:
-- {version: "1.15.2", state: present}
-- {version: "1.14.6", state: present}
+- {state: present, version: "1.15.2"}
+- {state: present, version: "1.14.6"}
+consul_dirs:
+- {group: root, mode: "0700", owner: root, path: "{{ consul_acl_dir }}"}
+- {group: root, mode: "0755", owner: root, path: "{{ consul_etc_dir }}"}
+- {group: root, mode: "0755", owner: root, path: "{{ consul_lib_dir }}"}
+- {group: root, mode: "0755", owner: root, path: "{{ consul_log_dir }}"}
 consul_enable_ui: false
 consul_etc_dir: /etc/consul
 consul_lib_dir: /var/lib/consul
@@ -14,10 +20,8 @@ consul_format: zip
 consul_log_dir: /var/log/consul
 consul_role: client  # ... or server
 consul_state: started
-consul_version: "1.15.2"
+consul_username: consul
+consul_version: "1.15.2"  # must be in consul_builds list
 
-consul_dirs:
-- "{{ consul_etc_dir }}"
-- "{{ consul_lib_dir }}"
-- "{{ consul_log_dir }}"
+# --------------------------------
 ...

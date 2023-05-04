@@ -1,6 +1,15 @@
 ---
 # --------------------------------
 
+- name: "System account"
+  ansible.builtin.user:
+    name: "{{ consul_username }}"
+    comment: "Consul system account"
+    system: true
+    state: present
+  become: true
+  tags: [ct-consul]
+
 - name: "Download archive"
   ansible.builtin.get_url:
     dest: "{{ hashicorp_dir_staging }}/consul_{{ item.version }}_{{ hashicorp_arch }}.{{ consul_format }}"
@@ -54,23 +63,26 @@
   become: true
   tags: [ct-consul]
 
-- name: "Directories"
+- name: "Top level directories"
   ansible.builtin.file:
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ item.owner }}"
+    path: "{{ item.path }}"
     state: directory
-    path: "{{ item }}"
-    owner: root
-    group: root
-    mode: "0755"
   loop: "{{ consul_dirs }}"
   become: true
   tags: [ct-consul]
 
-- name: "System account"
-  ansible.builtin.user:
-    name: consul
-    comment: "Consul system account"
-    system: true
-    state: present
+- name: "ACL directories"
+  ansible.builtin.file:
+    group: root
+    mode: "0700"
+    owner: root
+    path: "{{ consul_acl_dir }}/{{ item }}"
+    state: directory
+  loop: "{{ consul_acl_subdirs }}"
+  when: consul_role == "server"
   become: true
   tags: [ct-consul]
 
