@@ -3,9 +3,10 @@
 
 - name: "Download archive"
   ansible.builtin.get_url:
-    url: "{{ hashicorp_repo }}/consul/{{ item.version }}/consul_{{ item.version }}_{{ hashicorp_arch }}.{{ consul_format }}"
     dest: "{{ hashicorp_dir_staging }}/consul_{{ item.version }}_{{ hashicorp_arch }}.{{ consul_format }}"
+    mode: "0644"
     timeout: "{{ hashicorp_internet_timeout }}"
+    url: "{{ hashicorp_repo }}/consul/{{ item.version }}/consul_{{ item.version }}_{{ hashicorp_arch }}.{{ consul_format }}"
     validate_certs: false
   loop: "{{ consul_builds }}"
   when: item.state == "present"
@@ -49,7 +50,7 @@
     dest: /usr/local/etc/bash.d/consul.sh
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   become: true
   tags: [ct-consul]
 

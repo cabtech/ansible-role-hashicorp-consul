@@ -5,8 +5,8 @@
 # consul_servers: list(IPv4)
 
 consul_builds:
-- {version: '1.12.0', state: present}
-- {version: '1.12.4', state: present}
+- {version: "1.15.2", state: present}
+- {version: "1.14.6", state: present}
 consul_enable_ui: false
 consul_etc_dir: /etc/consul
 consul_lib_dir: /var/lib/consul
@@ -14,10 +14,10 @@ consul_format: zip
 consul_log_dir: /var/log/consul
 consul_role: client  # ... or server
 consul_state: started
-consul_version: '1.12.4'
+consul_version: "1.15.2"
 
 consul_dirs:
-- '{{ consul_etc_dir }}'
-- '{{ consul_lib_dir }}'
-- '{{ consul_log_dir }}'
+- "{{ consul_etc_dir }}"
+- "{{ consul_lib_dir }}"
+- "{{ consul_log_dir }}"
 ...
