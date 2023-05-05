@@ -13,7 +13,7 @@ consul_dirs:
 - {group: root, mode: "0755", owner: root, path: "{{ consul_etc_dir }}"}
 - {group: root, mode: "0755", owner: root, path: "{{ consul_lib_dir }}"}
 - {group: root, mode: "0755", owner: root, path: "{{ consul_log_dir }}"}
-consul_enable_ui: false
+consul_enable_ui: true
 consul_etc_dir: /etc/consul
 consul_lib_dir: /var/lib/consul
 consul_format: zip
