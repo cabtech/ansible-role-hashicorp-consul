@@ -19,6 +19,7 @@
     validate_certs: false
   loop: "{{ consul_builds }}"
   when: item.state == "present"
+  ignore_errors: "{{ ansible_check_mode }}"
   tags: [ct-consul]
 
 - name: "Create package directories"
@@ -30,6 +31,7 @@
     path: "{{ hashicorp_dir_pkg }}/consul/{{ item.version }}"
   loop: "{{ consul_builds }}"
   when: item.state == "present"
+  ignore_errors: "{{ ansible_check_mode }}"
   become: true
   tags: [ct-consul]
 
@@ -86,7 +88,7 @@
   become: true
   tags: [ct-consul]
 
-- name: "Render {{ consul_role }} config (no_log)"
+- name: "Render Consul config (no_log)"
   ansible.builtin.template:
     src: "{{ consul_role }}.json.j2"
     dest: "{{ consul_etc_dir }}/{{ consul_role }}.json"
@@ -110,13 +112,14 @@
   become: true
   tags: [ct-consul]
 
-- name: "Set consul-{{ consul_role }} service to {{ consul_state }}"
+- name: "Set Consul service"
   ansible.builtin.systemd:
     name: consul-{{ consul_role }}
     daemon_reload: "{{ reg_service is changed }}"
-    enabled: true
-    state: "{{ consul_state }}"
+    enabled: "{{ consul_svc_enabled | bool | lower }}"
+    state: "{{ consul_svc_state }}"
   when: (consul_servers | length) > 0
+  ignore_errors: "{{ ansible_check_mode }}"
   become: true
   tags: [ct-consul]
 
