@@ -1,10 +1,6 @@
 {
     "bootstrap_expect": {{ consul_servers | length }},
-{% if consul_bind_custom %}
     "client_addr": "{{ consul_bind_addr }}",
-{% else %}
-    "client_addr": "0.0.0.0",
-{% endif %}
     "datacenter": "{{ consul_datacentre }}",
     "data_dir": "{{ consul_lib_dir }}",
     "domain": "consul",

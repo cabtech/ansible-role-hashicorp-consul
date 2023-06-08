@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 ExecReload=/bin/kill -HUP $MAINPID
-ExecStart=/bin/bash -c '{{hashicorp_dir_bin}}/consul agent -config-file {{consul_etc_dir}}/server.json'
+ExecStart=/bin/bash -c '{{ hashicorp_dir_bin }}/consul agent -config-file {{ consul_etc_dir }}/server.json'
 TimeoutStartSec=0
  
 [Install]

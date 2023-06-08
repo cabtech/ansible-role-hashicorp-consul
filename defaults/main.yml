@@ -5,7 +5,7 @@ consul_acl_default_policy: allow
 consul_acl_dir: /usr/local/etc/consul
 consul_acl_enabled: false
 consul_acl_subdirs: ["intention.d", "manifest.d", "policy.d", "token.d"]
-consul_bind_custom: false
+consul_bind_addr: "0.0.0.0"
 consul_builds:
 - {state: present, version: "1.15.2"}
 - {state: present, version: "1.14.6"}

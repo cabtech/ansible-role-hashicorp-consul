@@ -16,7 +16,7 @@
 | consul_acl_enabled | Boolean | false ||
 | consul_acl_subdirs | list(dict) | see `defaults/main.yml` ||
 | consul_enable_ui | Boolean | false ||
-| consul_bind_custom | Boolean | false | if true bind to consul_bind_addr else 0.0.0.0 |
+| consul_bind_addr | IPV4 | 0.0.0.0 | set to privte IPV4 on metal |
 | consul_builds | list(dict) | see `defaults/main.yml` ||
 | consul_etc_dir | UnixPath | `/etc/consul` | where the server or client config lives |
 | consul_format | string | zip | used to form the name of the archive to download |
@@ -26,11 +26,6 @@
 | consul_state | string | started | state of the consul service |
 | consul_username | UnixUsername | consul ||
 | consul_version | string | `defaults/main.yml` | version to run |
-
-## Optional variables
-| Name | Type | Value | Purpose |
-| -----| ---- | ----- | ------- |
-| consul_bind_addr | IPV4 | used iff consul_bind_local is true |
 
 ## Role Dependencies
 - `ansible-role-hashicorp-common`
