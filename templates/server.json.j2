@@ -1,8 +1,12 @@
 {
-    "bootstrap_expect": {{consul_servers | length}},
+    "bootstrap_expect": {{ consul_servers | length }},
+{% if consul_bind_custom %}
+    "client_addr": "{{ consul_bind_addr }}",
+{% else %}
     "client_addr": "0.0.0.0",
-    "datacenter": "{{consul_datacentre}}",
-    "data_dir": "{{consul_lib_dir}}",
+{% endif %}
+    "datacenter": "{{ consul_datacentre }}",
+    "data_dir": "{{ consul_lib_dir }}",
     "domain": "consul",
     "enable_script_checks": true,
     "dns_config": {
@@ -10,17 +14,17 @@
         "only_passing": true
     },
     "enable_syslog": true,
-    "encrypt": "{{consul_key}}",
+    "encrypt": "{{ consul_key }}",
     "leave_on_terminate": true,
     "log_level": "INFO",
     "rejoin_after_leave": true,
     "server": true,
     "start_join": [
 {% for ip in consul_servers %}
-        "{{ip}}"{{ "," if not loop.last else "" }}
+        "{{ ip }}"{{ "," if not loop.last else "" }}
 {% endfor %}
     ],
     "ui_config": {
-        "enabled": {{consul_enable_ui | lower}}
+        "enabled": {{ consul_enable_ui | lower }}
     }
 }
