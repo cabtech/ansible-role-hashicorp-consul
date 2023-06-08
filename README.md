@@ -21,6 +21,8 @@
 | consul_etc_dir | UnixPath | `/etc/consul` | where the server or client config lives |
 | consul_format | string | zip | used to form the name of the archive to download |
 | consul_lib_dir | UnixPath | `/var/lib/consul` | where the data lives |
+| consul_listener_addr | IPV4 | `127.0.0.1` ||
+| consul_listener_port | UnixPort | 8500 ||
 | consul_log_dir | UnixPath | `/var/log/consul` | where any logs live |
 | consul_role | string | oneOf(client,server) ||
 | consul_state | string | started | state of the consul service |

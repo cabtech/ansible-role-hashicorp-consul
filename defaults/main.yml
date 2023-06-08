@@ -16,8 +16,10 @@ consul_dirs:
 - {group: root, mode: "0755", owner: root, path: "{{ consul_log_dir }}"}
 consul_enable_ui: true
 consul_etc_dir: /etc/consul
-consul_lib_dir: /var/lib/consul
 consul_format: zip
+consul_lib_dir: /var/lib/consul
+consul_listener_addr: "127.0.0.1"
+consul_listener_port: 8500
 consul_log_dir: /var/log/consul
 consul_role: client  # ... or server
 consul_svc_enabled: true

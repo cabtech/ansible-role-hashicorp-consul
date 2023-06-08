@@ -1,6 +1,7 @@
 # MANAGED_BY_ANSIBLE
-export PATH="${PATH}:{{hashicorp_dir_bin}}"
 alias cscn='consul catalog nodes'
 alias cscs='consul catalog services'
 alias  csm='consul members'
+export CONSUL_HTTP_ADDR="http://{{ consul_listener_addr }}:{{ consul_listener_port }}"
+export PATH="${PATH}:{{ hashicorp_dir_bin }}"
 # end
