@@ -1,14 +1,15 @@
 {
-    "data_dir": "{{consul_lib_dir}}",
-    "datacenter": "{{consul_datacentre}}",
+    "data_dir": "{{ consul_lib_dir }}",
+    "datacenter": "{{ consul_datacentre }}",
     "enable_syslog": true,
-    "encrypt": "{{consul_key}}",
+    "encrypt": "{{ consul_key }}",
     "leave_on_terminate": true,
     "log_level": "INFO",
+    "node_name": "{{ consul_nodename | default(inventory_hostname) }}",
     "server": false,
     "start_join": [
 {% for ip in consul_servers %}
-        "{{ip}}"{{ "," if not loop.last else "" }}
+        "{{ ip }}"{{ "," if not loop.last else "" }}
 {% endfor %}
     ]
 }

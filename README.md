@@ -6,7 +6,7 @@
 | -----| ---- | ------- |
 | consul_datacentre | string | give your Consul datacentre a proper name |
 | consul_key | token | key used to secure comms between nodes |
-| consul_servers | list(IPV4) | list of IP addresses to join the cluster |
+| consul_servers | list(IPV4) | IP addresses of the Consul server agents |
 
 ## Default variables
 | Name | Type | Value | Purpose |
@@ -24,6 +24,7 @@
 | consul_listener_addr | IPV4 | `127.0.0.1` ||
 | consul_listener_port | UnixPort | 8500 ||
 | consul_log_dir | UnixPath | `/var/log/consul` | where any logs live |
+| consul_nodename | string | inventory hostname | sets the nodename attribute in client nodes |
 | consul_role | string | oneOf(client,server) ||
 | consul_state | string | started | state of the consul service |
 | consul_username | UnixUsername | consul ||
