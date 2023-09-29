@@ -3,10 +3,10 @@ Description=Consul client process
 After=network.target
  
 [Service]
-Type=simple
 ExecReload=/bin/kill -HUP $MAINPID
-ExecStart=/bin/bash -c '{{hashicorp_dir_bin}}/consul agent -config-file {{consul_etc_dir}}/client.json -bind={{local_ipv4}}'
+ExecStart=/bin/bash -c '{{ hashicorp_dir_bin }}/consul agent -config-file {{ consul_etc_dir }}/client.hcl -bind={{ local_ipv4 }}'
 TimeoutStartSec=0
+Type=simple
  
 [Install]
 WantedBy=default.target

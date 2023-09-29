@@ -25,10 +25,10 @@
 | consul_listener_port | UnixPort | 8500 ||
 | consul_log_dir | UnixPath | `/var/log/consul` | where any logs live |
 | consul_nodename | string | inventory hostname | sets the nodename attribute in client nodes |
-| consul_role | string | oneOf(client,server) ||
+| consul_role | string | client | oneOf(client,server) |
 | consul_state | string | started | state of the consul service |
 | consul_username | UnixUsername | consul ||
-| consul_version | string | `defaults/main.yml` | version to run |
+| consul_version | string | `defaults/main.yml` | version from `consul_builds` to run |
 
 ## Role Dependencies
 - `ansible-role-hashicorp-common`

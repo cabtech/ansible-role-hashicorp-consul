@@ -1,0 +1,26 @@
+# MANAGED_BY_ANSIBLE
+bootstrap_expect = {{ consul_servers | length }}
+client_addr = "{{ consul_bind_addr }}"
+datacenter = "{{ consul_datacentre }}"
+data_dir = "{{ consul_lib_dir }}"
+domain = "consul"
+enable_script_checks = true
+dns_config {
+  enable_truncate = true
+  only_passing = true
+}
+enable_syslog = true
+encrypt = "{{ consul_key }}"
+leave_on_terminate = true
+log_level = "INFO"
+rejoin_after_leave = true
+server = true
+start_join = [
+{% for ip in consul_servers %}
+  "{{ ip }}",
+{% endfor %}
+]
+ui_config {
+  enabled = {{ consul_enable_ui | bool | lower }}
+}
+# END

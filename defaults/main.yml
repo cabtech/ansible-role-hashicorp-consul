@@ -21,11 +21,11 @@ consul_lib_dir: /var/lib/consul
 consul_listener_addr: "127.0.0.1"
 consul_listener_port: 8500
 consul_log_dir: /var/log/consul
-consul_role: client  # ... or server
+consul_role: client
 consul_svc_enabled: true
 consul_svc_state: started
 consul_username: consul
-consul_version: "1.15.2"  # must be in consul_builds list
+consul_version: "1.15.2"
 
 # --------------------------------
 ...

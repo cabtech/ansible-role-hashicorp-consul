@@ -3,10 +3,10 @@
 
 - name: "System account"
   ansible.builtin.user:
-    name: "{{ consul_username }}"
     comment: "Consul system account"
-    system: true
+    name: "{{ consul_username }}"
     state: present
+    system: true
   become: true
   tags: [ct-consul]
 
@@ -24,11 +24,11 @@
 
 - name: "Create package directories"
   ansible.builtin.file:
-    state: directory
-    owner: root
     group: root
     mode: "0755"
+    owner: root
     path: "{{ hashicorp_dir_pkg }}/consul/{{ item.version }}"
+    state: directory
   loop: "{{ consul_builds }}"
   when: item.state == "present"
   ignore_errors: "{{ ansible_check_mode }}"
@@ -37,9 +37,9 @@
 
 - name: "Expand archive"
   ansible.builtin.unarchive:
-    src: "{{ hashicorp_dir_staging }}/consul_{{ item.version }}_{{ hashicorp_arch }}.{{ consul_format }}"
-    dest: "{{ hashicorp_dir_pkg }}/consul/{{ item.version }}"
     copy: false
+    dest: "{{ hashicorp_dir_pkg }}/consul/{{ item.version }}"
+    src: "{{ hashicorp_dir_staging }}/consul_{{ item.version }}_{{ hashicorp_arch }}.{{ consul_format }}"
   loop: "{{ consul_builds }}"
   when: item.state == "present"
   ignore_errors: "{{ ansible_check_mode }}"
@@ -57,11 +57,11 @@
 
 - name: "Push bash include"
   ansible.builtin.template:
-    src: consul.sh.j2
     dest: /usr/local/etc/bash.d/consul.sh
-    owner: root
     group: root
     mode: "0644"
+    owner: root
+    src: consul.sh.j2
   become: true
   tags: [ct-consul]
 
@@ -88,15 +88,15 @@
   become: true
   tags: [ct-consul]
 
-- name: "Render Consul config (no_log)"
+- name: "Render Consul config (NL)"
   ansible.builtin.template:
-    src: "{{ consul_role }}.json.j2"
-    dest: "{{ consul_etc_dir }}/{{ consul_role }}.json"
-    owner: root
+    dest: "{{ consul_etc_dir }}/{{ consul_role }}.hcl"
     group: root
     mode: "0600"
+    owner: root
+    src: "{{ consul_role }}.hcl.j2"
   when: (consul_servers | length) > 0
-  notify: Handler_Reload_Consul
+  notify: HandlerRestartConsul
   no_log: true
   become: true
   tags: [ct-consul]
@@ -107,19 +107,26 @@
     group: root
     mode: "0644"
     owner: root
-    src: consul-{{ consul_role }}.service.j2
-  register: reg_service
+    src: systemd.consul-{{ consul_role }}.j2
+  register: unit_file
   become: true
   tags: [ct-consul]
 
 - name: "Set Consul service"
   ansible.builtin.systemd:
-    name: consul-{{ consul_role }}
-    daemon_reload: "{{ reg_service is changed }}"
+    daemon_reload: "{{ unit_file is changed }}"
     enabled: "{{ consul_svc_enabled | bool | lower }}"
+    name: consul-{{ consul_role }}
     state: "{{ consul_svc_state }}"
   when: (consul_servers | length) > 0
   ignore_errors: "{{ ansible_check_mode }}"
+  become: true
+  tags: [ct-consul]
+
+- name: "DEPRECATION remove JSON config file"
+  ansible.builtin.file:
+    path: "{{ consul_etc_dir }}/{{ consul_role }}.json"
+    state: absent
   become: true
   tags: [ct-consul]
 
