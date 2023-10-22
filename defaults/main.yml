@@ -22,6 +22,7 @@ consul_listener_addr: "127.0.0.1"
 consul_listener_port: 8500
 consul_log_dir: /var/log/consul
 consul_role: client  # ... or server
+consul_servers: []
 consul_svc_enabled: true
 consul_svc_state: started
 consul_username: consul
