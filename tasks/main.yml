@@ -88,14 +88,16 @@
   become: true
   tags: [ct-consul]
 
-- name: "Render Consul config (no_log)"
+- name: "Render Consul config (NL)"
   ansible.builtin.template:
     src: "{{ consul_role }}.json.j2"
     dest: "{{ consul_etc_dir }}/{{ consul_role }}.json"
     owner: root
     group: root
     mode: "0600"
-  when: (consul_servers | length) > 0
+  when:
+  - consul_key is defined
+  - (consul_servers | length) > 0
   notify: Handler_Reload_Consul
   no_log: true
   become: true
@@ -112,13 +114,25 @@
   become: true
   tags: [ct-consul]
 
-- name: "Set Consul service"
+- name: "Set Consul service (IECM)"
   ansible.builtin.systemd:
     name: consul-{{ consul_role }}
     daemon_reload: "{{ reg_service is changed }}"
     enabled: "{{ consul_svc_enabled | bool | lower }}"
     state: "{{ consul_svc_state }}"
-  when: (consul_servers | length) > 0
+  when:
+  - consul_key is defined
+  - (consul_servers | length) > 0
+  ignore_errors: "{{ ansible_check_mode }}"
+  become: true
+  tags: [ct-consul]
+
+- name: "Halt Consul service (IECM)"
+  ansible.builtin.systemd:
+    name: consul-{{ consul_role }}
+    enabled: false
+    state: stopped
+  when: (consul_key is not defined) or ((consul_servers | length) == 0)
   ignore_errors: "{{ ansible_check_mode }}"
   become: true
   tags: [ct-consul]
