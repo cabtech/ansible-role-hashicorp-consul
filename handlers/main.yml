@@ -1,11 +1,11 @@
 ---
-- name: "Handler_Reload_Consul"
+- name: "HandlerReloadConsul"
   ansible.builtin.systemd:
     state: reloaded
     name: consul-{{ consul_role }}.service
   become: true
 
-- name: "Handler_Restart_Consul"
+- name: "HandlerRestartConsul"
   ansible.builtin.systemd:
     state: restarted
     name: consul-{{ consul_role }}.service

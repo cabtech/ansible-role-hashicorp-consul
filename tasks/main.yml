@@ -98,7 +98,7 @@
   when:
   - consul_key is defined
   - (consul_servers | length) > 0
-  notify: Handler_Reload_Consul
+  notify: HandlerRestartConsul
   no_log: true
   become: true
   tags: [ct-consul]
