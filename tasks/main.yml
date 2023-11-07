@@ -88,13 +88,21 @@
   become: true
   tags: [ct-consul]
 
-- name: "Render Consul config (NL)"
+- name: "Remove Consul JSON config file (DEPRECATION)"
+  ansible.builtin.file:
+    path: "{{ consul_etc_dir }}/{{ consul_role }}.json"
+    state: absent
+  notify: HandlerRestartConsul
+  become: true
+  tags: [ct-consul]
+
+- name: "Render Consul config file (NL)"
   ansible.builtin.template:
-    src: "{{ consul_role }}.json.j2"
-    dest: "{{ consul_etc_dir }}/{{ consul_role }}.json"
-    owner: root
+    dest: "{{ consul_etc_dir }}/{{ consul_role }}.hcl"
     group: root
     mode: "0600"
+    owner: root
+    src: "{{ consul_role }}.hcl.j2"
   when:
   - consul_key is defined
   - (consul_servers | length) > 0

@@ -1,0 +1,14 @@
+# MANAGED_BY_ANSIBLE
+data_dir = "{{ consul_lib_dir }}"
+datacenter = "{{ consul_datacentre }}"
+enable_syslog = true
+encrypt = "{{ consul_key }}"
+leave_on_terminate = true
+log_level = "INFO"
+node_name = "{{ consul_nodename | default(inventory_hostname) }}"
+server = false
+start_join = [
+{% for ip in consul_servers %}
+  "{{ ip }}",
+{% endfor %}
+]
