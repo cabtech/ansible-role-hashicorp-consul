@@ -7,8 +7,10 @@ leave_on_terminate = true
 log_level = "INFO"
 node_name = "{{ consul_nodename | default(inventory_hostname) }}"
 server = false
-start_join = [
-{% for ip in consul_servers %}
+{%	if consul_servers is defined %}
+retry_join = [
+{%		for ip in consul_servers %}
   "{{ ip }}",
-{% endfor %}
+{%		endfor %}
+{%	endif %}
 ]
