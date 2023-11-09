@@ -1,0 +1,44 @@
+# MANAGED_BY_ANSIBLE
+bootstrap_expect     = {{ consul_servers | length }}
+client_addr          = "{{ consul_bind_addr }}"
+datacenter           = "{{ consul_datacentre }}"
+data_dir             = "{{ consul_lib_dir }}"
+domain               = "consul"
+enable_script_checks = true
+enable_syslog        = true
+encrypt              = "{{ consul_key }}"
+leave_on_terminate   = true
+log_level            = "INFO"
+{%	if consul_primary_datacentre is defined %}
+primary_datacenter   = "{{ consul_primary_datacentre }}"
+{%	endif %}
+rejoin_after_leave   = true
+server               = true
+{%	if consul_primary_datacentre is defined %}
+
+acl {
+  default_policy           = "{{ consul_acl_default_policy }}"
+  down_policy              = "extend-cache"
+  enable_token_persistence = true
+  enabled                  = {{ consul_acl_enabled | bool | lower }}
+}
+{%	endif %}
+
+connect {
+  enabled = {{ consul_connect_enabled | bool | lower }}
+}
+
+dns_config {
+  enable_truncate = true
+  only_passing    = true
+}
+
+retry_join = [
+{% for ip in consul_servers %}
+  "{{ ip }}",
+{% endfor %}
+]
+
+ui_config {
+  enabled = {{ consul_enable_ui | bool | lower }}
+}

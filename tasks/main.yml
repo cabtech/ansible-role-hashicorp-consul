@@ -90,7 +90,7 @@
 
 - name: "Remove Consul JSON config file (DEPRECATION)"
   ansible.builtin.file:
-    path: "{{ consul_etc_dir }}/{{ consul_role }}.json"
+    path: "{{ consul_cfg_dir }}/{{ consul_role }}.json"
     state: absent
   notify: HandlerRestartConsul
   become: true
@@ -98,7 +98,7 @@
 
 - name: "Render Consul config file (NL)"
   ansible.builtin.template:
-    dest: "{{ consul_etc_dir }}/{{ consul_role }}.hcl"
+    dest: "{{ consul_cfg_dir }}/{{ consul_role }}.hcl"
     group: root
     mode: "0600"
     owner: root
