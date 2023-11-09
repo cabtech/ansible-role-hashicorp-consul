@@ -2,27 +2,33 @@
 # --------------------------------
 
 consul_acl_default_policy: allow
-consul_acl_dir: /usr/local/etc/consul
+consul_acl_dir: "{{ consul_cfg_dir }}/acl"
 consul_acl_enabled: false
 consul_acl_subdirs: ["intention.d", "manifest.d", "policy.d", "token.d"]
 consul_bind_addr: "0.0.0.0"
 consul_builds:
 - {state: present, version: "1.15.2"}
 - {state: present, version: "1.14.6"}
+consul_cfg_dir: /etc/consul
+consul_connect_enabled: false
+# consul_datacentre  # required
 consul_dirs:
-- {group: root, mode: "0700", owner: root, path: "{{ consul_acl_dir }}"}
-- {group: root, mode: "0755", owner: root, path: "{{ consul_etc_dir }}"}
+- {group: root, mode: "0755", owner: root, path: "{{ consul_acl_dir }}"}
+- {group: root, mode: "0755", owner: root, path: "{{ consul_cfg_dir }}"}
 - {group: root, mode: "0755", owner: root, path: "{{ consul_lib_dir }}"}
 - {group: root, mode: "0755", owner: root, path: "{{ consul_log_dir }}"}
+- {group: root, mode: "0755", owner: root, path: "{{ consul_svc_dir }}"}
 consul_enable_ui: true
-consul_etc_dir: /etc/consul
 consul_format: zip
+# consul_key  # required
 consul_lib_dir: /var/lib/consul
 consul_listener_addr: "127.0.0.1"
 consul_listener_port: 8500
 consul_log_dir: /var/log/consul
+# consul_primary_datacentre  # optional
 consul_role: client  # ... or server
 consul_servers: []
+consul_svc_dir: "{{ consul_cfg_dir }}/svc"
 consul_svc_enabled: true
 consul_svc_state: started
 consul_username: consul
