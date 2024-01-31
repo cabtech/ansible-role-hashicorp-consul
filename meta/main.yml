@@ -1,4 +1,6 @@
 ---
+# --------------------------------
+
 dependencies:
 - src: git+https://github.com/cabtech/ansible-role-hashicorp-common.git
   tags: ct-consul
@@ -10,8 +12,10 @@ galaxy_info:
   license: GPL v3
   min_ansible_version: TBC
   namespace: cabtech
+  role_name: ansible_role_hashicorp_consul
   platforms:
   - name: Ubuntu
     versions: ["bionic", "focal", "jammy"]
-  role_name: ansible_role_hashicorp_consul
+
+# --------------------------------
 ...

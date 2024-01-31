@@ -2,5 +2,6 @@
 skip_list:
 - ignore-errors
 - name[template]
+- role-name
 - yaml[indentation]
 ...
