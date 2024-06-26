@@ -51,6 +51,7 @@
     dest: "{{ hashicorp_dir_bin }}/consul"
     src: "{{ hashicorp_dir_pkg }}/consul/{{ consul_version }}/consul"
     state: link
+  notify: HandlerRestartConsul
   ignore_errors: "{{ ansible_check_mode }}"
   become: true
   tags: [ct-consul]
