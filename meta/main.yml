@@ -4,7 +4,7 @@
 dependencies:
 - src: git+https://github.com/cabtech/ansible-role-hashicorp-common.git
   tags: ct-consul
-  version: "2.2.0"
+  version: "2.3.0"
 
 galaxy_info:
   author: Tim Short
