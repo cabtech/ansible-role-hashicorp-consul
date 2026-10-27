@@ -12,11 +12,6 @@ lint: .ylint .alint
 clean:
 	@/bin/rm -f .alint .ylint
 
-.PHONY: push
-push: lint
-	@mkdir -p /mnt/hgfs/shared/ansible-role-hashicorp-consul
-	rsync -a .config .gitignore [A-z]* /mnt/hgfs/shared/ansible-role-hashicorp-consul
-
 # --------------------------------
 
 init-uv:
