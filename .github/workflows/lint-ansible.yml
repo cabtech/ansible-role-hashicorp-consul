@@ -1,14 +1,13 @@
 ---
 # --------------------------------
 
-name: "yamllint-action"
+name: "Lint Ansible"
 on:  # yamllint disable-line rule:truthy
   push:
     branches: ["main"]
   workflow_dispatch:
 jobs:
   yamllint:
-    name: yamllint-job
     runs-on: ubuntu-latest
     steps:
     - name: "Checkout"
@@ -17,8 +16,19 @@ jobs:
       uses: astral-sh/setup-uv@v10.2.0
     - name: "Install tools"
       run: uv sync --locked --no-install-project
-    - name: "yamllint-lint"
+    - name: "yamllint"
       run: uv run --no-sync yamllint --strict --config-file=.config/yamllint .
+  ansible-lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v7
+    - name: "Setup uv"
+      uses: astral-sh/setup-uv@v10.2.0
+    - name: "Install tools"
+      run: uv sync --locked --no-install-project
+    - name: "ansible-lint"
+      run: uv run --no-sync ansible-lint --config-file=.config/ansible-lint.yml .
 
 # --------------------------------
 ...
